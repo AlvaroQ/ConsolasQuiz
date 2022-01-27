@@ -1,0 +1,74 @@
+<resources>
+    <!-- Title APP -->
+    <string name="app_name">Consolas test</string>
+
+    <!-- Select screen -->
+    <string name="start">Jugar</string>
+    <string name="start_new_game">Empezar nuevo juego</string>
+    <string name="learn">Aprender</string>
+    <string name="learn_more">Leer información</string>
+    <string name="settings">Ajustes</string>
+    <string name="settings_description">Quitar sonido o borrar publicidad</string>
+
+    <!-- Settings screen -->
+    <string name="settings_version">Version</string>
+    <string name="settings_delete_ads">Quitar anuncios</string>
+    <string name="settings_delete_ads_summary">Quitar anuncios para siempre</string>
+    <string name="settings_sounds">Sonidos</string>
+    <string name="settings_rate_app">Valorar la aplicación</string>
+    <string name="settings_rate_app_summary">Ir al play store para puntuar la app</string>
+    <string name="settings_more_apps">Más aplicaciones</string>
+    <string name="settings_more_apps_summary">Aplicaciones gratuitas recomendadas</string>
+    <string name="sounds_on">Sonido activo</string>
+    <string name="sounds_off">Sonido desactivado</string>
+    <string name="more_apps">Más aplicaciones</string>
+    <string name="know_more">Saber más</string>
+    <string name="settings_share">Comparte con tus amigos</string>
+    <string name="settings_share_summary">Comparte con tus amigos esta app</string>
+    <string name="not_exist">No existe</string>
+    <string name="read_info">Información del orgullo</string>
+
+    <!-- Result screen -->
+    <string name="resultado_screen_title">Resultado final</string>
+    <string name="share_message">\nHice una puntuación de %d ¿eres capaz de superarlo?\n\n</string>
+    <string name="share_message_general">\nMe ha gustado mucho esta aplicación.\n\n</string>
+    <string name="choose_one">Elige una:</string>
+    <string name="other_apps">Otras aplicaciones</string>
+    <string name="play_again">Jugar de nuevo</string>
+    <string name="share">Compartir</string>
+    <string name="rate_on_play_store">Puntuar en play store</string>
+    <string name="result">Resultado: %d</string>
+    <string name="personal_record">Récord personal: %s</string>
+    <string name="world_record">Récord mundial: %s</string>
+    <string name="anonymous">Anónimo</string>
+
+    <!-- Ranking screen -->
+    <string name="ranking_screen_title">Ranking</string>
+    <string name="best_points">Mejores puntuaciones</string>
+
+    <!-- Dialog screen -->
+    <string name="dialog_ranking_congratulation">¡Enhorabuena!</string>
+    <string name="dialog_ranking_description">¡Entraste en las mejores puntuaciones!</string>
+    <string name="dialog_name">Nombre</string>
+    <string name="dialog_save">Guardar</string>
+
+    <!-- Dialog extra life -->
+    <string name="dialog_extra_life_title">Vida extra</string>
+    <string name="dialog_extra_life_description">¿Quiere una vida extra viendo un anuncio?</string>
+    <string name="dialog_extra_life_btn_yes">Sí</string>
+    <string name="dialog_extra_life_btn_no">No</string>
+
+    <!-- Game screen -->
+    <string name="life">life</string>
+    <string name="points">Puntos\n%d</string>
+
+    <!-- Info screen -->
+    <string name="info_title">Información</string>
+    <string name="generation">Generación: %d</string>
+    <string name="year">Año: %s</string>
+    <string name="sold">Unidades vendidas: %s</string>
+
+    <!-- content -->
+    <string name="locale">es</string>
+    <string name="best_score">Mejores puntuaciones</string>
+</resources>

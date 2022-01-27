@@ -1,0 +1,199 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildtoolsVersion
+
+    signingConfigs {
+        config {
+            keyAlias CONSOLASQUIZ_RELEASE_KEY_ALIAS
+            keyPassword CONSOLASQUIZ_RELEASE_KEY_PASSWORD
+            storeFile file(CONSOLASQUIZ_RELEASE_STORE_FILE)
+            storePassword CONSOLASQUIZ_RELEASE_STORE_PASSWORD
+        }
+        debug {
+            keyAlias CONSOLASQUIZ_RELEASE_KEY_ALIAS
+            keyPassword CONSOLASQUIZ_RELEASE_KEY_PASSWORD
+            storeFile file(CONSOLASQUIZ_RELEASE_STORE_FILE)
+            storePassword CONSOLASQUIZ_RELEASE_STORE_PASSWORD
+        }
+    }
+
+    defaultConfig {
+        applicationId names.applicationId
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.code
+        versionName versions.name
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            jniDebuggable true
+            testCoverageEnabled true
+            debuggable true
+            minifyEnabled false
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
+
+            resValue 'string', 'BANNER_GAME', getAdmobBannerTestId()
+            resValue 'string', 'BANNER_RANKING', getAdmobBannerTestId()
+            resValue 'string', 'BANNER_INFO', getAdmobBannerTestId()
+            resValue 'string', 'BANNER_PREFERENCES', getAdmobBannerTestId()
+            resValue 'string', 'BANNER_MORE_APPS', getAdmobBannerTestId()
+
+            resValue 'string', 'BONIFICADO_GAME', getAdmobBonificadoTestId()
+            resValue 'string', 'BONIFICADO_GAME_OVER', getAdmobBonificadoTestId()
+            resValue 'string', 'BONIFICADO_SHOW_INFO', getAdmobBonificadoTestId()
+        }
+        release {
+            signingConfig signingConfigs.config
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
+
+            resValue 'string', 'BANNER_GAME', getAdmobBannerGameId()
+            resValue 'string', 'BANNER_RANKING', getAdmobBannerRankingId()
+            resValue 'string', 'BANNER_INFO', getAdmobBannerInfoId()
+            resValue 'string', 'BANNER_PREFERENCES', getAdmobBannerPreferencesId()
+            resValue 'string', 'BANNER_MORE_APPS', getAdmobBannerMoreAppsId()
+
+            resValue 'string', 'BONIFICADO_GAME', getAdmobBonificadoGameId()
+            resValue 'string', 'BONIFICADO_GAME_OVER', getAdmobBonificadoGameOverId()
+            resValue 'string', 'BONIFICADO_SHOW_INFO', getAdmobBonificadoShowInfoId()
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+
+dependencies {
+    implementation project(":data")
+    implementation project(":domain")
+    implementation project(":usecases")
+
+    implementation androidLibs.values()
+    implementation androidKtxLibs.values()
+    implementation kotlinLibs.values()
+    implementation libs.values()
+    implementation androidKaptLibs.values()
+
+    testImplementation testLibs.values()
+    testImplementation androidxTestLibs.values()
+    androidTestImplementation androidTestLibs.values()
+
+}
+
+// KEYS ADMOB TEST
+def getAdmobBannerTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_test_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBonificadoTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_bonificado_test_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+
+// KEYS ADMOB PRODUCTION
+def getAdmobBannerGameId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_game' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBannerRankingId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_ranking' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBannerInfoId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_info' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBannerPreferencesId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_preferences' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBannerMoreAppsId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_more_apps' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBonificadoGameId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_bonificado_game' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBonificadoGameOverId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_bonificado_game_over' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBonificadoShowInfoId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_bonificado_show_info' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
