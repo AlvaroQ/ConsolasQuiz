@@ -7,7 +7,7 @@ import com.quiz.data.datasource.DataBaseSource
 import com.quiz.data.datasource.FirestoreDataSource
 import com.quiz.data.datasource.SharedPreferencesLocalDataSource
 import com.quiz.data.repository.AppsRecommendedRepository
-import com.quiz.data.repository.PrideByIdRepository
+import com.quiz.data.repository.ConsoleByIdRepository
 import com.quiz.data.repository.RankingRepository
 import com.quiz.data.repository.SharedPreferencesRepository
 import com.quiz.videoconsolas.common.ResourceProvider
@@ -62,7 +62,7 @@ private val appModule = module {
 }
 
 val dataModule = module {
-    factory { PrideByIdRepository(get()) }
+    factory { ConsoleByIdRepository(get()) }
     factory { AppsRecommendedRepository(get()) }
     factory { RankingRepository(get()) }
     factory { SharedPreferencesRepository(get()) }
@@ -75,7 +75,7 @@ private val scopesModule = module {
     }
     scope(named<GameFragment>()) {
         viewModel { GameViewModel(get(), get(), get()) }
-        scoped { GetConsolaById(get()) }
+        scoped { GetConsoleById(get()) }
         scoped { GetPaymentDone(get()) }
     }
     scope(named<ResultFragment>()) {
@@ -94,7 +94,7 @@ private val scopesModule = module {
     }
     scope(named<InfoFragment>()) {
         viewModel { InfoViewModel(get(), get()) }
-        scoped { GetConsolaList(get()) }
+        scoped { GetConsoleList(get()) }
         scoped { GetPaymentDone(get()) }
     }
     scope(named<MoreAppsFragment>()) {

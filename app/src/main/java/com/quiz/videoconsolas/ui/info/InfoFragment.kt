@@ -16,7 +16,7 @@ import com.quiz.videoconsolas.common.startActivity
 import com.quiz.videoconsolas.databinding.InfoFragmentBinding
 import com.quiz.videoconsolas.ui.select.SelectActivity
 import com.quiz.videoconsolas.utils.Constants.TOTAL_ITEM_EACH_LOAD
-import com.quiz.videoconsolas.utils.Constants.TOTAL_PRIDES
+import com.quiz.videoconsolas.utils.Constants.TOTAL_CONSOLES
 import com.quiz.videoconsolas.utils.glideLoadingGif
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
@@ -44,8 +44,8 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         infoViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
-        infoViewModel.consoleList.observe(viewLifecycleOwner, Observer(::fillPrideList))
-        infoViewModel.updateConsoleList.observe(viewLifecycleOwner, Observer(::updatePrideList))
+        infoViewModel.consoleList.observe(viewLifecycleOwner, Observer(::fillConsoleList))
+        infoViewModel.updateConsoleList.observe(viewLifecycleOwner, Observer(::updateConsoleList))
         infoViewModel.progress.observe(viewLifecycleOwner, Observer(::updateProgress))
         infoViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
     }
@@ -64,14 +64,14 @@ class InfoFragment : Fragment() {
         }
     }
 
-    private fun fillPrideList(consoleList: MutableList<Console>) {
+    private fun fillConsoleList(consoleList: MutableList<Console>) {
         adapter = InfoListAdapter(requireContext(), consoleList)
         binding.recyclerviewInfo.adapter = adapter
         setRecyclerViewScrollListener()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun updatePrideList(consoleList: MutableList<Console>) {
+    private fun updateConsoleList(consoleList: MutableList<Console>) {
         adapter.update(consoleList)
         adapter.notifyDataSetChanged()
         setRecyclerViewScrollListener()
@@ -87,10 +87,10 @@ class InfoFragment : Fragment() {
                 if (totalItemCount == lastVisibleItemPosition + 1) {
                     binding.recyclerviewInfo.removeOnScrollListener(scrollListener)
 
-                    if(currentPage * TOTAL_ITEM_EACH_LOAD < TOTAL_PRIDES) {
+                    if(currentPage * TOTAL_ITEM_EACH_LOAD < TOTAL_CONSOLES) {
                         Log.d("MyTAG", "Load new list")
                         currentPage++
-                        infoViewModel.loadMorePrideList(currentPage)
+                        infoViewModel.loadMoreConsoleList(currentPage)
                     }
                 }
             }

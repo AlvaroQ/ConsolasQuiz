@@ -8,11 +8,11 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@drawable/background</item>
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
-        <item name="android:buttonStyle">@style/prideButton</item>
+        <item name="android:buttonStyle">@style/consoleButton</item>
         <item name="android:colorControlActivated">@color/light_purple</item>
     </style>
 
-    <style name="prideButton" parent="Bold.TextColor.Medium" >
+    <style name="consoleButton" parent="Bold.TextColor.Medium" >
         <item name="android:background">@drawable/selector_with_radius_button</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>

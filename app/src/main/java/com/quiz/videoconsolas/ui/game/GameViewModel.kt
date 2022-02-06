@@ -3,16 +3,15 @@ package com.quiz.videoconsolas.ui.game
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.quiz.domain.Console
-import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.common.ResourceProvider
 import com.quiz.videoconsolas.common.ScopedViewModel
 import com.quiz.videoconsolas.managers.AnalyticsManager
-import com.quiz.videoconsolas.utils.Constants.TOTAL_PRIDES
+import com.quiz.videoconsolas.utils.Constants.TOTAL_CONSOLES
 import com.quiz.usecases.GetPaymentDone
-import com.quiz.usecases.GetConsolaById
+import com.quiz.usecases.GetConsoleById
 import kotlinx.coroutines.launch
 
-class GameViewModel(private val getConsolaById: GetConsolaById,
+class GameViewModel(private val getConsoleById: GetConsoleById,
                     private val resourceProvider: ResourceProvider,
                     private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {
     private var randomCountries = mutableListOf<Int>()
@@ -48,24 +47,24 @@ class GameViewModel(private val getConsolaById: GetConsolaById,
             _progress.value = UiModel.Loading(true)
 
             /** Generate question */
-            val numRandomMain = generateRandomWithExcusion(0, TOTAL_PRIDES, *randomCountries.toIntArray())
+            val numRandomMain = generateRandomWithExcusion(0, TOTAL_CONSOLES, *randomCountries.toIntArray())
             randomCountries.add(numRandomMain)
 
-            console = getPride(numRandomMain)
+            console = getConsole(numRandomMain)
 
             /** Generate responses */
             val numRandomMainPosition = generateRandomWithExcusion(0, 3)
 
-            val numRandomOption1 = generateRandomWithExcusion(0, TOTAL_PRIDES, numRandomMain)
-            val option1: Console = getPride(numRandomOption1)
+            val numRandomOption1 = generateRandomWithExcusion(0, TOTAL_CONSOLES, numRandomMain)
+            val option1: Console = getConsole(numRandomOption1)
             val numRandomPosition1 = generateRandomWithExcusion(0, 3, numRandomMainPosition)
 
-            val numRandomOption2 = generateRandomWithExcusion(0, TOTAL_PRIDES, numRandomMain, numRandomOption1)
-            val option2: Console = getPride(numRandomOption2)
+            val numRandomOption2 = generateRandomWithExcusion(0, TOTAL_CONSOLES, numRandomMain, numRandomOption1)
+            val option2: Console = getConsole(numRandomOption2)
             val numRandomPosition2 = generateRandomWithExcusion(0, 3, numRandomMainPosition, numRandomPosition1)
 
-            val numRandomOption3 = generateRandomWithExcusion(0, TOTAL_PRIDES, numRandomMain, numRandomOption1, numRandomOption2)
-            val option3: Console = getPride(numRandomOption3)
+            val numRandomOption3 = generateRandomWithExcusion(0, TOTAL_CONSOLES, numRandomMain, numRandomOption1, numRandomOption2)
+            val option3: Console = getConsole(numRandomOption3)
             val numRandomPosition3 = generateRandomWithExcusion(0, 3, numRandomMainPosition, numRandomPosition1, numRandomPosition2)
 
             /** Save value */
@@ -82,8 +81,8 @@ class GameViewModel(private val getConsolaById: GetConsolaById,
         }
     }
 
-    private suspend fun getPride(id: Int): Console {
-        return getConsolaById.invoke(id)
+    private suspend fun getConsole(id: Int): Console {
+        return getConsoleById.invoke(id)
     }
 
     fun navigateToResult(points: String) {
@@ -91,7 +90,7 @@ class GameViewModel(private val getConsolaById: GetConsolaById,
         _navigation.value = Navigation.Result
     }
 
-    fun getPride() : Console {
+    fun getConsole() : Console {
         return console
     }
 

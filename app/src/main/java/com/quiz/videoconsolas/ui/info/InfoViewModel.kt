@@ -6,10 +6,10 @@ import com.quiz.domain.Console
 import com.quiz.videoconsolas.common.ScopedViewModel
 import com.quiz.videoconsolas.managers.AnalyticsManager
 import com.quiz.usecases.GetPaymentDone
-import com.quiz.usecases.GetConsolaList
+import com.quiz.usecases.GetConsoleList
 import kotlinx.coroutines.launch
 
-class InfoViewModel(private val getConsolaList: GetConsolaList,
+class InfoViewModel(private val getConsoleList: GetConsoleList,
                     private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {
     private var list = mutableListOf<Console>()
 
@@ -19,11 +19,11 @@ class InfoViewModel(private val getConsolaList: GetConsolaList,
     private val _navigation = MutableLiveData<Navigation>()
     val navigation: LiveData<Navigation> = _navigation
 
-    private val _prideList = MutableLiveData<MutableList<Console>>()
-    val consoleList: LiveData<MutableList<Console>> = _prideList
+    private val _consoleList = MutableLiveData<MutableList<Console>>()
+    val consoleList: LiveData<MutableList<Console>> = _consoleList
 
-    private val _updatePrideList = MutableLiveData<MutableList<Console>>()
-    val updateConsoleList: LiveData<MutableList<Console>> = _updatePrideList
+    private val _updateConsoleList = MutableLiveData<MutableList<Console>>()
+    val updateConsoleList: LiveData<MutableList<Console>> = _updateConsoleList
 
     private val _showingAds = MutableLiveData<UiModel>()
     val showingAds: LiveData<UiModel> = _showingAds
@@ -32,22 +32,22 @@ class InfoViewModel(private val getConsolaList: GetConsolaList,
         AnalyticsManager.analyticsScreenViewed(AnalyticsManager.SCREEN_INFO)
         launch {
             _progress.value = UiModel.Loading(true)
-            _prideList.value = getPrideList(0)
+            _consoleList.value = getConsoleList(0)
             _showingAds.value = UiModel.ShowAd(!getPaymentDone())
             _progress.value = UiModel.Loading(false)
         }
     }
 
-    fun loadMorePrideList(currentPage: Int) {
+    fun loadMoreConsoleList(currentPage: Int) {
         launch {
             _progress.value = UiModel.Loading(true)
-            _updatePrideList.value = getPrideList(currentPage)
+            _updateConsoleList.value = getConsoleList(currentPage)
             _progress.value = UiModel.Loading(false)
         }
     }
 
-    private suspend fun getPrideList(currentPage: Int): MutableList<Console> {
-        list = (list + getConsolaList.invoke(currentPage)) as MutableList<Console>
+    private suspend fun getConsoleList(currentPage: Int): MutableList<Console> {
+        list = (list + getConsoleList.invoke(currentPage)) as MutableList<Console>
         return list
     }
 

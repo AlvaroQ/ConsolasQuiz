@@ -24,7 +24,7 @@ import com.quiz.videoconsolas.databinding.GameFragmentBinding
 import com.quiz.videoconsolas.ui.result.ResultActivity
 import com.quiz.videoconsolas.utils.*
 import com.quiz.videoconsolas.utils.Constants.POINTS
-import com.quiz.videoconsolas.utils.Constants.TOTAL_PRIDES
+import com.quiz.videoconsolas.utils.Constants.TOTAL_CONSOLES
 import kotlinx.android.synthetic.main.dialog_extra_life.*
 import kotlinx.coroutines.*
 import org.koin.android.scope.lifecycleScope
@@ -168,7 +168,7 @@ class GameFragment : Fragment() {
         enableBtn(false)
         stage += 1
 
-        drawCorrectResponse(gameViewModel.getPride().name!!)
+        drawCorrectResponse(gameViewModel.getConsole().name!!)
         nextScreen()
     }
 
@@ -329,12 +329,12 @@ class GameFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             delay(TimeUnit.MILLISECONDS.toMillis(1000))
             withContext(Dispatchers.Main) {
-                if(life < 1 && !extraLife && stage < TOTAL_PRIDES) {
+                if(life < 1 && !extraLife && stage < TOTAL_CONSOLES) {
                     extraLife = true
                     gameViewModel.navigateToExtraLifeDialog()
                 }
 
-                else if(stage > (TOTAL_PRIDES + 1) || life < 1) {
+                else if(stage > (TOTAL_CONSOLES + 1) || life < 1) {
                     gameViewModel.navigateToResult(points.toString())
                 } else {
                     gameViewModel.generateNewStage()

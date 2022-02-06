@@ -11,20 +11,27 @@ import com.quiz.domain.App
 import com.quiz.domain.Console
 import com.quiz.videoconsolas.BuildConfig
 import com.quiz.videoconsolas.utils.Constants.PATH_REFERENCE_APPS
-import com.quiz.videoconsolas.utils.Constants.PATH_REFERENCE_PRIDE
+import com.quiz.videoconsolas.utils.Constants.PATH_REFERENCE_CONSOLE
 import com.quiz.videoconsolas.utils.Constants.TOTAL_ITEM_EACH_LOAD
 import com.quiz.videoconsolas.utils.log
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.lang.Exception
 
 class DataBaseSourceImpl : DataBaseSource {
 
     override suspend fun getConsolaById(id: Int): Console {
         return suspendCancellableCoroutine { continuation ->
-            FirebaseDatabase.getInstance().getReference(PATH_REFERENCE_PRIDE + id)
+            FirebaseDatabase.getInstance().getReference(PATH_REFERENCE_CONSOLE + id)
                 .addValueEventListener(object : ValueEventListener {
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        continuation.resume(dataSnapshot.getValue(Console::class.java) as Console){}
+                        try {
+                            continuation.resume(dataSnapshot.getValue(Console::class.java) as Console){}
+                        } catch (e: Exception) {
+                            log("getConsolaById FAILED", "Failed to read value.", e)
+                            continuation.resume(Console()){}
+                            FirebaseCrashlytics.getInstance().recordException(Throwable(e))
+                        }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -38,20 +45,20 @@ class DataBaseSourceImpl : DataBaseSource {
 
     override suspend fun getConsolaList(currentPage: Int): MutableList<Console> {
         return suspendCancellableCoroutine { continuation ->
-            FirebaseDatabase.getInstance().getReference(PATH_REFERENCE_PRIDE)
+            FirebaseDatabase.getInstance().getReference(PATH_REFERENCE_CONSOLE)
                 .orderByKey()
                 .startAt((currentPage * TOTAL_ITEM_EACH_LOAD).toString())
                 .limitToFirst(TOTAL_ITEM_EACH_LOAD)
                 .addValueEventListener(object : ValueEventListener {
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val prideList = mutableListOf<Console>()
+                        val consoleList = mutableListOf<Console>()
                         if(dataSnapshot.hasChildren()) {
                             for(snapshot in dataSnapshot.children) {
-                                prideList.add(snapshot.getValue(Console::class.java)!!)
+                                consoleList.add(snapshot.getValue(Console::class.java)!!)
                             }
                         }
-                        continuation.resume(prideList) {}
+                        continuation.resume(consoleList) {}
                     }
 
                     override fun onCancelled(error: DatabaseError) {
