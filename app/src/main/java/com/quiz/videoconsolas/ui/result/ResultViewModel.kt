@@ -44,7 +44,7 @@ class ResultViewModel(private val getAppsRecommended: GetAppsRecommended,
             _progress.value = UiModel.Loading(true)
             _list.value = appsRecommended()
             _worldRecord.value = getPointsWorldRecord()
-            _showingAds.value = UiModel.ShowAd(!getPaymentDone())
+            //_showingAds.value = UiModel.ShowAd(!getPaymentDone())
             _progress.value = UiModel.Loading(false)
         }
     }
@@ -135,6 +135,6 @@ class ResultViewModel(private val getAppsRecommended: GetAppsRecommended,
 
     sealed class UiModel {
         data class Loading(val show: Boolean) : UiModel()
-        data class ShowAd(val show: Boolean) : UiModel()
+        //data class ShowAd(val show: Boolean) : UiModel()
     }
 }

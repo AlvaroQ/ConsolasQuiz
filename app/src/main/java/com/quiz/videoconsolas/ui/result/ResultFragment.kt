@@ -89,8 +89,8 @@ class ResultFragment : Fragment() {
     }
 
     private fun loadAd(model: ResultViewModel.UiModel) {
-        if (model is ResultViewModel.UiModel.ShowAd)
-            (activity as ResultActivity).showAd(model.show)
+       // if (model is ResultViewModel.UiModel.ShowAd)
+      //      (activity as ResultActivity).showAd(model.show)
     }
 
     private fun fillWorldRecord(recordWorldPoints: String) {
