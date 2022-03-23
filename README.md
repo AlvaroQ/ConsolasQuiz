@@ -1,7 +1,7 @@
 # ConsolasQuiz
 
 <p align="center">
-    <img src="https://github.com/AlvaroQ/ConsolasQuiz/blob/main/capture/app.gif.png">
+    <img src="https://github.com/AlvaroQ/ConsolasQuiz/blob/main/capture/app.gif" width="250">
 </p>
 
 
