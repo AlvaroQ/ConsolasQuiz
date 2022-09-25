@@ -28,7 +28,6 @@ import com.quiz.videoconsolas.ui.result.ResultViewModel
 import com.quiz.videoconsolas.ui.select.SelectFragment
 import com.quiz.videoconsolas.ui.select.SelectViewModel
 import com.quiz.videoconsolas.ui.settings.SettingsFragment
-import com.quiz.videoconsolas.ui.settings.SettingsViewModel
 import com.quiz.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -101,10 +100,5 @@ private val scopesModule = module {
         viewModel { MoreAppsViewModel(get(), get()) }
         scoped { GetAppsRecommended(get()) }
         scoped { GetPaymentDone(get()) }
-    }
-    scope(named<SettingsFragment>()) {
-        viewModel { SettingsViewModel(get(), get()) }
-        scoped { GetPaymentDone(get()) }
-        scoped { SetPaymentDone(get()) }
     }
 }

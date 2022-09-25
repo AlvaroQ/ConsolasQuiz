@@ -12,8 +12,6 @@
 
     <!-- Settings screen -->
     <string name="settings_version">Versão</string>
-    <string name="settings_delete_ads">Eliminar anúncios</string>
-    <string name="settings_delete_ads_summary">Remover os anúncios</string>
     <string name="settings_sounds">Sons</string>
     <string name="settings_rate_app">Avaliar aplicação</string>
     <string name="settings_rate_app_summary">Ir à loja de jogos para avaliar a aplicação</string>

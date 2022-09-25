@@ -25,8 +25,6 @@ import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.common.startActivity
 import com.quiz.videoconsolas.databinding.ResultFragmentBinding
 import com.quiz.videoconsolas.ui.ranking.RankingActivity
-import com.quiz.videoconsolas.ui.settings.SettingsActivity
-import com.quiz.videoconsolas.ui.settings.SettingsViewModel
 import com.quiz.videoconsolas.utils.*
 import com.quiz.videoconsolas.utils.Constants.POINTS
 import kotlinx.android.synthetic.main.dialog_save_record.*
@@ -143,7 +141,7 @@ class ResultFragment : Fragment() {
             setContentView(R.layout.dialog_save_record)
             btnCancel.setSafeOnClickListener { dismiss() }
             btnSubmit.setSafeOnClickListener {
-                val userImage: String = if(resultViewModel.photoUrl.value.isNullOrEmpty()) Constants.DEFAULT_IMAGE else resultViewModel.photoUrl.value!!
+                val userImage: String = if(resultViewModel.photoUrl.value.isNullOrEmpty()) Constants.DEFAULT_IMAGE_UPLOAD_TO_SERVER else resultViewModel.photoUrl.value!!
                 resultViewModel.saveTopScore(User(
                     name = editTextWorldRecord.text.toString(),
                     points = gamePoints.toString(),

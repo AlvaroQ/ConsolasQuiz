@@ -33,6 +33,14 @@ import java.util.concurrent.TimeUnit
 
 
 class GameFragment : Fragment() {
+
+    enum class Options {
+        OPTION_ONE,
+        OPTION_TWO,
+        OPTION_THREE,
+        OPTION_FOUR
+    }
+
     private var extraLife = false
     private val gameViewModel: GameViewModel by lifecycleScope.viewModel(this)
     private lateinit var binding: GameFragmentBinding
@@ -110,7 +118,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun navigate(navigation: GameViewModel.Navigation?) {
+    private fun navigate(navigation: GameViewModel.Navigation) {
         when (navigation) {
             is GameViewModel.Navigation.Result -> {
                 activity?.startActivity<ResultActivity> { putExtra(POINTS, points) }
@@ -190,122 +198,59 @@ class GameFragment : Fragment() {
         }
     }
 
+    private fun drawFailOption(option: Options) {
+        soundFail()
+        deleteLife()
+        when(option) {
+            Options.OPTION_ONE -> btnOptionOne.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
+            Options.OPTION_TWO ->  btnOptionTwo.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
+            Options.OPTION_THREE -> btnOptionThree.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
+            Options.OPTION_FOUR -> btnOptionFour.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
+        }
+    }
+
+    private fun drawCorrectOption() {
+        soundSuccess()
+        points += 1
+        (activity as GameActivity).writePoints(points)
+    }
+
     private fun drawCorrectResponse(capitalNameCorrect: String) {
         when {
             btnOptionOne.text == capitalNameCorrect -> {
                 btnOptionOne.background =  ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_correct)
                 when {
-                    btnOptionOne.isSelected -> {
-                        soundSuccess()
-                        points += 1
-                        (activity as GameActivity).writePoints(points)
-                    }
-                    btnOptionTwo.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionTwo.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionThree.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionThree.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionFour.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionFour.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    else -> {
-                        soundFail()
-                        deleteLife()
-                    }
+                    btnOptionOne.isSelected -> drawCorrectOption()
+                    btnOptionTwo.isSelected -> drawFailOption(Options.OPTION_TWO)
+                    btnOptionThree.isSelected -> drawFailOption(Options.OPTION_THREE)
+                    btnOptionFour.isSelected -> drawFailOption(Options.OPTION_FOUR)
                 }
             }
             btnOptionTwo.text == capitalNameCorrect -> {
                 btnOptionTwo.background =  ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_correct)
                 when {
-                    btnOptionOne.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionOne.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionTwo.isSelected -> {
-                        soundSuccess()
-                        points += 1
-                        (activity as GameActivity).writePoints(points)
-                    }
-                    btnOptionThree.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionThree.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionFour.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionFour.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    else -> {
-                        soundFail()
-                        deleteLife()
-                    }
+                    btnOptionOne.isSelected -> drawFailOption(Options.OPTION_ONE)
+                    btnOptionTwo.isSelected -> drawCorrectOption()
+                    btnOptionThree.isSelected -> drawFailOption(Options.OPTION_THREE)
+                    btnOptionFour.isSelected -> drawFailOption(Options.OPTION_FOUR)
                 }
             }
             btnOptionThree.text == capitalNameCorrect -> {
                 btnOptionThree.background =  ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_correct)
                 when {
-                    btnOptionOne.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionOne.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionTwo.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionTwo.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionThree.isSelected -> {
-                        soundSuccess()
-                        points += 1
-                        (activity as GameActivity).writePoints(points)
-                    }
-                    btnOptionFour.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionFour.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    else -> {
-                        soundFail()
-                        deleteLife()
-                    }
+                    btnOptionOne.isSelected -> drawFailOption(Options.OPTION_ONE)
+                    btnOptionTwo.isSelected -> drawFailOption(Options.OPTION_TWO)
+                    btnOptionThree.isSelected -> drawCorrectOption()
+                    btnOptionFour.isSelected -> drawFailOption(Options.OPTION_FOUR)
                 }
             }
             btnOptionFour.text == capitalNameCorrect -> {
                 btnOptionFour.background =  ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_correct)
                 when {
-                    btnOptionOne.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionOne.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionTwo.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionTwo.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionThree.isSelected -> {
-                        soundFail()
-                        deleteLife()
-                        btnOptionThree.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_radius_wrong)
-                    }
-                    btnOptionFour.isSelected -> {
-                        soundSuccess()
-                        points += 1
-                        (activity as GameActivity).writePoints(points)
-                    }
-                    else -> {
-                        soundFail()
-                        deleteLife()
-                    }
+                    btnOptionOne.isSelected -> drawFailOption(Options.OPTION_ONE)
+                    btnOptionTwo.isSelected -> drawFailOption(Options.OPTION_TWO)
+                    btnOptionThree.isSelected -> drawFailOption(Options.OPTION_THREE)
+                    btnOptionFour.isSelected -> drawCorrectOption()
                 }
             }
         }
@@ -338,7 +283,7 @@ class GameFragment : Fragment() {
                     gameViewModel.navigateToResult(points.toString())
                 } else {
                     gameViewModel.generateNewStage()
-                    if(stage % 25 == 0) gameViewModel.showRewardedAd()
+                    if(stage != 0 && stage % 8 == 0) gameViewModel.showRewardedAd()
                 }
             }
         }

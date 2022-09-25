@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.quiz.videoconsolas.common.ScopedViewModel
 import com.quiz.videoconsolas.managers.AnalyticsManager
-import com.quiz.videoconsolas.ui.settings.SettingsViewModel
 import com.quiz.usecases.GetPaymentDone
 
 class SelectViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {

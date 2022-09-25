@@ -51,7 +51,7 @@ fun glideLoadURL(context: Context, url: String?, where: ImageView) {
 }
 
 fun glideLoadBase64(context: Context, imageBytes: String?, where: ImageView) {
-    val imageByteArray: ByteArray = Base64.decode(imageBytes, Base64.DEFAULT)
+    val imageByteArray = convertImageToByteArray(imageBytes)
 
     Glide.with(context)
         .asBitmap()
@@ -68,6 +68,18 @@ fun glideCircleLoadBase64(context: Context, imageBytes: String?, where: ImageVie
         .load(imageByteArray)
         .transition(BitmapTransitionOptions.withCrossFade())
         .into(where)
+}
+
+fun convertImageToByteArray(imageBytes: String?): ByteArray {
+    return if(imageBytes.isNullOrEmpty() || imageBytes == Constants.DEFAULT_IMAGE_UPLOAD_TO_SERVER) {
+        Base64.decode(Constants.DEFAULT_IMAGE, Base64.DEFAULT)
+    } else {
+        try {
+            Base64.decode(imageBytes, Base64.DEFAULT)
+        } catch (exception: Exception) {
+            Base64.decode(Constants.DEFAULT_IMAGE, Base64.DEFAULT)
+        }
+    }
 }
 
 fun glideLoadingGif(context: Context, where: ImageView) {

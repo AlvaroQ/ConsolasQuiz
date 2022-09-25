@@ -12,8 +12,6 @@
 
     <!-- Settings screen -->
     <string name="settings_version">Version</string>
-    <string name="settings_delete_ads">Quitar anuncios</string>
-    <string name="settings_delete_ads_summary">Quitar anuncios para siempre</string>
     <string name="settings_sounds">Sonidos</string>
     <string name="settings_rate_app">Valorar la aplicación</string>
     <string name="settings_rate_app_summary">Ir al play store para puntuar la app</string>

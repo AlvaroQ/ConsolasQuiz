@@ -11,8 +11,8 @@ buildscript {
             'compileSdk'            : 30,
             'minSdk'                : 24,
             'targetSdk'             : 30,
-            'name'                  : '1.0.1',
-            'code'                  : 2,
+            'name'                  : '1.0.2',
+            'code'                  : 3,
             'buildtoolsVersion'     : '30.0.2',
     ]
     ext.libsversions = [
@@ -20,8 +20,7 @@ buildscript {
             'gradle_version'         : '4.1.2',
             'koin_version'           : '2.1.5',
             'preference_version'     : '1.1.1',
-            'google_services_version': '4.3.4',
-            'billing_version'        : "3.0.0"
+            'google_services_version': '4.3.4'
     ]
 
     dependencies {
@@ -70,10 +69,7 @@ buildscript {
                 crashlytics         : "com.google.firebase:firebase-crashlytics:17.0.0",
 
                 // Admod
-                admob               : "com.google.android.gms:play-services-ads:19.4.0",
-
-                // In-app purchase remove ads
-                billingclient       : "com.android.billingclient:billing-ktx:${libsversions.billing_version}"
+                admob               : "com.google.android.gms:play-services-ads:19.4.0"
         ]
 
         detektPlugin = [
