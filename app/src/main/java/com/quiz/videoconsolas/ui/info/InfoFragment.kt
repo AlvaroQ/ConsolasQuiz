@@ -18,16 +18,15 @@ import com.quiz.videoconsolas.ui.select.SelectActivity
 import com.quiz.videoconsolas.utils.Constants.TOTAL_ITEM_EACH_LOAD
 import com.quiz.videoconsolas.utils.Constants.TOTAL_CONSOLES
 import com.quiz.videoconsolas.utils.glideLoadingGif
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class InfoFragment : Fragment() {
     private lateinit var binding: InfoFragmentBinding
-    private val infoViewModel: InfoViewModel by lifecycleScope.viewModel(this)
+    private val infoViewModel: InfoViewModel by viewModel()
     private var currentPage = 0
     private lateinit var scrollListener: RecyclerView.OnScrollListener
-    lateinit var adapter: InfoListAdapter
+    private lateinit var adapter: InfoListAdapter
 
     companion object {
         fun newInstance() = InfoFragment()
@@ -98,14 +97,13 @@ class InfoFragment : Fragment() {
         binding.recyclerviewInfo.addOnScrollListener(scrollListener)
     }
 
-    private fun navigate(navigation: InfoViewModel.Navigation?) {
+    private fun navigate(navigation: InfoViewModel.Navigation) {
         when (navigation) {
             InfoViewModel.Navigation.Select -> {
                 activity?.startActivity<SelectActivity> {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 }
             }
-            else -> {}
         }
     }
 }

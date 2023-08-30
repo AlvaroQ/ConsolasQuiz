@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.rewarded.RewardedAd
 import com.quiz.domain.User
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.databinding.RankingFragmentBinding
 import com.quiz.videoconsolas.utils.glideLoadingGif
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import com.quiz.videoconsolas.utils.showBanner
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class RankingFragment : Fragment() {
-    private lateinit var adViewRanking: AdView
     private lateinit var binding: RankingFragmentBinding
-    private val rankingViewModel: RankingViewModel by lifecycleScope.viewModel(this)
+    private val rankingViewModel: RankingViewModel by viewModel()
+    private var rewardedAd: RewardedAd? = null
 
     companion object {
         fun newInstance() = RankingFragment()
@@ -33,7 +33,7 @@ class RankingFragment : Fragment() {
         binding = RankingFragmentBinding.inflate(inflater)
         val root = binding.root
 
-        adViewRanking = root.findViewById(R.id.adViewRanking)
+        MobileAds.initialize(requireContext())
 
         return root
     }
@@ -59,7 +59,7 @@ class RankingFragment : Fragment() {
         }
     }
 
-    private fun navigate(navigation: RankingViewModel.Navigation?) {
+    private fun navigate(navigation: RankingViewModel.Navigation) {
         when (navigation) {
             RankingViewModel.Navigation.Result -> {
                 activity?.finish()
@@ -68,12 +68,8 @@ class RankingFragment : Fragment() {
     }
 
     private fun loadAd(model: RankingViewModel.UiModel) {
-        if (model is RankingViewModel.UiModel.ShowAd && model.show) {
-            MobileAds.initialize(activity)
-            val adRequest = AdRequest.Builder().build()
-            adViewRanking.loadAd(adRequest)
-        } else {
-            adViewRanking.visibility = View.GONE
+        if (model is RankingViewModel.UiModel.ShowAd) {
+            showBanner(model.show, binding.adViewRanking)
         }
     }
 }

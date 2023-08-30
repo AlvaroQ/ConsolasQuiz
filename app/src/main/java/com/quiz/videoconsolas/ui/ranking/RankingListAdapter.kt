@@ -11,7 +11,6 @@ import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.common.inflate
 import com.quiz.videoconsolas.utils.getRelationTime
 import com.quiz.videoconsolas.utils.glideCircleLoadBase64
-import kotlinx.android.synthetic.main.item_ranking_user.view.*
 
 class RankingListAdapter(
     val context: Context,

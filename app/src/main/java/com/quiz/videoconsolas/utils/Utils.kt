@@ -10,9 +10,13 @@ import android.os.Build
 import android.text.format.DateUtils
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.rewarded.RewardedAd
 import com.quiz.videoconsolas.BuildConfig
 import com.quiz.videoconsolas.R
 import java.io.File
@@ -127,5 +131,24 @@ fun openAppOnPlayStore(context: Context, appPackageName: String) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
     } catch (notFoundException: ActivityNotFoundException) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+    }
+}
+fun showBanner(show: Boolean, adView: AdView){
+    if(show) {
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+    } else {
+        adView.visibility = View.GONE
+    }
+}
+fun showBonificado(activity: Activity, show: Boolean, rewardedAd: RewardedAd?) {
+    if(show) {
+        rewardedAd?.let { ad ->
+            ad.show(activity) { rewardItem ->
+                Log.d("loadBonificado", "User earned the reward. rewardAmount=$rewardItem.amount, rewardType=$rewardItem.type")
+            }
+        } ?: run {
+            Log.d("loadBonificado", "The rewarded ad wasn't ready yet.")
+        }
     }
 }

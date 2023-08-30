@@ -1,26 +1,29 @@
 package com.quiz.videoconsolas.ui.moreApps
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.quiz.domain.App
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.databinding.MoreAppsFragmentBinding
 import com.quiz.videoconsolas.utils.glideLoadingGif
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
-
+import com.quiz.videoconsolas.utils.showBanner
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MoreAppsFragment : Fragment() {
     private lateinit var binding: MoreAppsFragmentBinding
-    private lateinit var adViewMoreApps: AdView
-    private val moreAppsViewModel: MoreAppsViewModel by lifecycleScope.viewModel(this)
+    private val moreAppsViewModel: MoreAppsViewModel by viewModel()
+    private var rewardedAd: RewardedAd? = null
 
     companion object {
         fun newInstance() = MoreAppsFragment()
@@ -33,7 +36,19 @@ class MoreAppsFragment : Fragment() {
         binding = MoreAppsFragmentBinding.inflate(inflater)
         val root = binding.root
 
-        adViewMoreApps = root.findViewById(R.id.adViewMoreApps)
+        MobileAds.initialize(requireContext())
+        RewardedAd.load(requireContext(), getString(R.string.BONIFICADO_GAME), AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("GameActivity", adError.toString())
+                FirebaseCrashlytics.getInstance().recordException(Throwable(adError.message))
+                rewardedAd = null
+            }
+
+            override fun onAdLoaded(ad: RewardedAd) {
+                Log.d("GameActivity", "Ad was loaded.")
+                rewardedAd = ad
+            }
+        })
 
         return root
     }
@@ -59,19 +74,15 @@ class MoreAppsFragment : Fragment() {
         }
     }
 
-    private fun navigate(navigation: MoreAppsViewModel.Navigation?) {
+    private fun navigate(navigation: MoreAppsViewModel.Navigation) {
         when (navigation) {
             MoreAppsViewModel.Navigation.Result -> { activity?.finishAfterTransition() }
         }
     }
 
     private fun loadAd(model: MoreAppsViewModel.UiModel) {
-        if (model is MoreAppsViewModel.UiModel.ShowAd && model.show) {
-            MobileAds.initialize(activity)
-            val adRequest = AdRequest.Builder().build()
-            adViewMoreApps.loadAd(adRequest)
-        } else {
-            adViewMoreApps.visibility = View.GONE
+        if (model is MoreAppsViewModel.UiModel.ShowAd) {
+            showBanner(model.show, binding.adViewMoreApps)
         }
     }
 }

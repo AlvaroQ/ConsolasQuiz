@@ -3,26 +3,28 @@ package com.quiz.videoconsolas.ui.settings
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.base.BaseActivity
+import com.quiz.videoconsolas.databinding.SettingsActivityBinding
 import com.quiz.videoconsolas.utils.setSafeOnClickListener
-import kotlinx.android.synthetic.main.app_bar_layout.*
-import kotlinx.android.synthetic.main.settings_activity.*
+import com.quiz.videoconsolas.common.viewBinding
+import com.quiz.videoconsolas.utils.showBanner
 
 
 class SettingsActivity : BaseActivity() {
+    private val binding by viewBinding(SettingsActivityBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
+        setContentView(binding.root)
         setupToolbar()
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        MobileAds.initialize(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -36,19 +38,9 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
-        toolbarTitle.text = getString(R.string.settings)
-        layoutLife.visibility = View.GONE
-        layoutExtendedTitle.background = null
-        btnBack.setSafeOnClickListener { finishAfterTransition() }
-    }
-
-    fun showAd(show: Boolean){
-        if(show) {
-            MobileAds.initialize(this)
-            val adRequest = AdRequest.Builder().build()
-            adViewSettings.loadAd(adRequest)
-        } else {
-            adViewSettings.visibility = View.GONE
-        }
+        binding.appBar.toolbarTitle.text = getString(R.string.settings)
+        binding.appBar.layoutLife.visibility = View.GONE
+        binding.appBar.layoutExtendedTitle.background = null
+        binding.appBar.btnBack.setSafeOnClickListener { finishAfterTransition() }
     }
 }

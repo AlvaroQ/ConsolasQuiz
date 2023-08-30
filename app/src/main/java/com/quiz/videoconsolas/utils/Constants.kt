@@ -1,6 +1,8 @@
 package com.quiz.videoconsolas.utils
 
 object Constants {
+    const val URL_STORE = "https://play.google.com/store/apps/collection/cluster?clp=igM4ChkKEzg4Nzc2MDA3NjYwNDEzMDc4NTIQCBgDEhkKEzg4Nzc2MDA3NjYwNDEzMDc4NTIQCBgDGAA%3D:S:ANO1ljItPd0&gsr=CjuKAzgKGQoTODg3NzYwMDc2NjA0MTMwNzg1MhAIGAMSGQoTODg3NzYwMDc2NjA0MTMwNzg1MhAIGAMYAA%3D%3D:S:ANO1ljLjm34"
+
     const val POINTS = "points"
     const val TOTAL_CONSOLES = 135
     const val TOTAL_ITEM_EACH_LOAD = 15

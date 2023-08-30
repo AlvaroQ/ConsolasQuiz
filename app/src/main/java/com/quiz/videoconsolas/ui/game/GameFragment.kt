@@ -20,15 +20,14 @@ import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.common.traslationAnimation
 import com.quiz.videoconsolas.common.traslationAnimationFadeIn
 import com.quiz.videoconsolas.common.startActivity
+import com.quiz.videoconsolas.databinding.DialogExtraLifeBinding
 import com.quiz.videoconsolas.databinding.GameFragmentBinding
 import com.quiz.videoconsolas.ui.result.ResultActivity
 import com.quiz.videoconsolas.utils.*
 import com.quiz.videoconsolas.utils.Constants.POINTS
 import com.quiz.videoconsolas.utils.Constants.TOTAL_CONSOLES
-import kotlinx.android.synthetic.main.dialog_extra_life.*
 import kotlinx.coroutines.*
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -42,7 +41,7 @@ class GameFragment : Fragment() {
     }
 
     private var extraLife = false
-    private val gameViewModel: GameViewModel by lifecycleScope.viewModel(this)
+    private val gameViewModel: GameViewModel by viewModel()
     private lateinit var binding: GameFragmentBinding
 
     private lateinit var imageLoading: ImageView
@@ -283,7 +282,7 @@ class GameFragment : Fragment() {
                     gameViewModel.navigateToResult(points.toString())
                 } else {
                     gameViewModel.generateNewStage()
-                    if(stage != 0 && stage % 8 == 0) gameViewModel.showRewardedAd()
+                    if(stage != 0 && stage % 9 == 0) gameViewModel.showRewardedAd()
                 }
             }
         }
@@ -291,14 +290,16 @@ class GameFragment : Fragment() {
 
     private fun showExtraLifeDialog() {
         Dialog(requireContext()).apply {
+            val binding = DialogExtraLifeBinding.inflate(layoutInflater)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setContentView(R.layout.dialog_extra_life)
-            btnNo.setSafeOnClickListener {
+            setContentView(binding.root)
+            setCancelable(false)
+            binding.btnNo.setSafeOnClickListener {
                 dismiss()
                 gameViewModel.navigateToResult(points.toString())
             }
-            btnYes.setSafeOnClickListener {
+            binding.btnYes.setSafeOnClickListener {
                 dismiss()
                 gameViewModel.showRewardedAd()
                 addExtraLife()

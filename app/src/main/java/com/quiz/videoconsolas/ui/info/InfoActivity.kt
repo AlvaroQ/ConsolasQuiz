@@ -6,15 +6,17 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.base.BaseActivity
+import com.quiz.videoconsolas.databinding.InfoActivityBinding
 import com.quiz.videoconsolas.utils.setSafeOnClickListener
-import kotlinx.android.synthetic.main.app_bar_layout.*
-import kotlinx.android.synthetic.main.info_activity.*
+import com.quiz.videoconsolas.common.viewBinding
+import com.quiz.videoconsolas.utils.showBanner
 
 class InfoActivity : BaseActivity() {
+    private val binding by viewBinding(InfoActivityBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.info_activity)
+        setContentView(binding.root)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -22,18 +24,14 @@ class InfoActivity : BaseActivity() {
                 .commitNow()
         }
 
-        btnBack.setSafeOnClickListener { finishAfterTransition() }
-        toolbarTitle.text = getString(R.string.info_title)
-        layoutLife.visibility = View.GONE
+        MobileAds.initialize(this)
+
+        binding.appBar.btnBack.setSafeOnClickListener { finishAfterTransition() }
+        binding.appBar.toolbarTitle.text = getString(R.string.info_title)
+        binding.appBar.layoutLife.visibility = View.GONE
     }
 
     fun showAd(show: Boolean){
-        if(show) {
-            MobileAds.initialize(this)
-            val adRequest = AdRequest.Builder().build()
-            adViewInfo.loadAd(adRequest)
-        } else {
-            adViewInfo.visibility = View.GONE
-        }
+        showBanner(show, binding.adViewInfo)
     }
 }

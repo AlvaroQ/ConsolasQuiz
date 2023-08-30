@@ -119,7 +119,7 @@ class ResultViewModel(private val getAppsRecommended: GetAppsRecommended,
         _navigation.value = Navigation.PickerImage
     }
 
-    fun setImage(image: String?) {
+    fun setImage(image: String) {
         _photoUrl.value = image
     }
 

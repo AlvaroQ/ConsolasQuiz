@@ -1,5 +1,8 @@
 package com.quiz.videoconsolas.ui.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -7,6 +10,7 @@ import com.quiz.videoconsolas.BuildConfig
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.common.startActivity
 import com.quiz.videoconsolas.ui.moreApps.MoreAppsActivity
+import com.quiz.videoconsolas.utils.Constants
 import com.quiz.videoconsolas.utils.rateApp
 import com.quiz.videoconsolas.utils.shareApp
 
@@ -40,7 +44,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // more_apps
         val moreApps: Preference? = findPreference("more_apps")
         moreApps?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            activity?.startActivity<MoreAppsActivity> {}
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_STORE)))
+            } catch (_: ActivityNotFoundException) { }
             false
         }
     }

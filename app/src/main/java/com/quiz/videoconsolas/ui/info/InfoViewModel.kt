@@ -33,7 +33,7 @@ class InfoViewModel(private val getConsoleList: GetConsoleList,
         launch {
             _progress.value = UiModel.Loading(true)
             _consoleList.value = getConsoleList(0)
-            _showingAds.value = UiModel.ShowAd(!getPaymentDone())
+            _showingAds.value = UiModel.ShowAd(true)
             _progress.value = UiModel.Loading(false)
         }
     }

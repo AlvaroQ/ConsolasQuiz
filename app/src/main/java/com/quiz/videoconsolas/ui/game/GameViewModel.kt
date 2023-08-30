@@ -35,11 +35,11 @@ class GameViewModel(private val getConsoleById: GetConsoleById,
     init {
         AnalyticsManager.analyticsScreenViewed(AnalyticsManager.SCREEN_GAME)
         generateNewStage()
-        _showingAds.value = UiModel.ShowBannerAd(!getPaymentDone())
+        _showingAds.value = UiModel.ShowBannerAd(true)
     }
 
     fun showRewardedAd() {
-        _showingAds.value = UiModel.ShowReewardAd(!getPaymentDone())
+        _showingAds.value = UiModel.ShowReewardAd(true)
     }
 
     fun generateNewStage() {

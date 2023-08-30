@@ -23,18 +23,18 @@ import com.quiz.domain.App
 import com.quiz.domain.User
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.common.startActivity
+import com.quiz.videoconsolas.databinding.DialogSaveRecordBinding
 import com.quiz.videoconsolas.databinding.ResultFragmentBinding
 import com.quiz.videoconsolas.ui.ranking.RankingActivity
 import com.quiz.videoconsolas.utils.*
+import com.quiz.videoconsolas.utils.Constants.DEFAULT_IMAGE_UPLOAD_TO_SERVER
 import com.quiz.videoconsolas.utils.Constants.POINTS
-import kotlinx.android.synthetic.main.dialog_save_record.*
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ResultFragment : Fragment() {
     private lateinit var binding: ResultFragmentBinding
-    private val resultViewModel: ResultViewModel by lifecycleScope.viewModel(this)
+    private val resultViewModel: ResultViewModel by viewModel()
     private var gamePoints = 0
     private lateinit var imageViewPickup: ImageView
 
@@ -103,8 +103,7 @@ class ResultFragment : Fragment() {
         binding.recyclerviewOtherApps.adapter = AppListAdapter(
             activity as ResultActivity,
             appList,
-            resultViewModel::onAppClicked
-        )
+            resultViewModel::onAppClicked)
     }
 
     private fun updateProgress(model: ResultViewModel.UiModel?) {
@@ -116,14 +115,16 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private fun navigate(navigation: ResultViewModel.Navigation?) {
+    private fun navigate(navigation: ResultViewModel.Navigation) {
         when (navigation) {
             ResultViewModel.Navigation.Rate -> rateApp(requireContext())
             ResultViewModel.Navigation.Game -> activity?.finishAfterTransition()
             ResultViewModel.Navigation.Ranking -> activity?.startActivity<RankingActivity> {}
             is ResultViewModel.Navigation.Share -> shareApp(navigation.points, requireContext())
             is ResultViewModel.Navigation.Open -> openAppOnPlayStore(requireContext(), navigation.url)
-            is ResultViewModel.Navigation.Dialog -> showEnterNameDialog(navigation.points)
+            is ResultViewModel.Navigation.Dialog -> {
+                //showEnterNameDialog()
+            }
             ResultViewModel.Navigation.PickerImage -> {
                 ImagePicker.with(this)
                         .crop()
@@ -134,16 +135,17 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private fun showEnterNameDialog(points: String) {
+    private fun showEnterNameDialog() {
         Dialog(requireContext()).apply {
+            val binding = DialogSaveRecordBinding.inflate(layoutInflater)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setContentView(binding.root)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setContentView(R.layout.dialog_save_record)
-            btnCancel.setSafeOnClickListener { dismiss() }
-            btnSubmit.setSafeOnClickListener {
+            binding.btnCancel.setSafeOnClickListener { dismiss() }
+            binding.btnSubmit.setSafeOnClickListener {
                 val userImage: String = if(resultViewModel.photoUrl.value.isNullOrEmpty()) Constants.DEFAULT_IMAGE_UPLOAD_TO_SERVER else resultViewModel.photoUrl.value!!
                 resultViewModel.saveTopScore(User(
-                    name = editTextWorldRecord.text.toString(),
+                    name = binding.editTextWorldRecord.text.toString(),
                     points = gamePoints.toString(),
                     score = gamePoints,
                     userImage = userImage,
@@ -152,7 +154,7 @@ class ResultFragment : Fragment() {
                 dismiss()
             }
 
-            imageViewPickup = imageUserPickup
+            imageViewPickup = binding.imageUserPickup
             imageViewPickup.setSafeOnClickListener { resultViewModel.clickOnPicker() }
             show()
         }
@@ -166,7 +168,8 @@ class ResultFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             Activity.RESULT_OK -> {
-                resultViewModel.setImage(ImagePicker.getFile(data)?.toBase64())
+                val image = ImagePicker.getFile(data)?.toBase64() ?: run { DEFAULT_IMAGE_UPLOAD_TO_SERVER }
+                resultViewModel.setImage(image)
             }
             ImagePicker.RESULT_ERROR -> {
                 Toast.makeText(activity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()

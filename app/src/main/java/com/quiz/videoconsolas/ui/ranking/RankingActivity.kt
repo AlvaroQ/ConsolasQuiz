@@ -5,9 +5,11 @@ import android.view.View
 import com.quiz.videoconsolas.R
 import com.quiz.videoconsolas.base.BaseActivity
 import com.quiz.videoconsolas.utils.setSafeOnClickListener
-import kotlinx.android.synthetic.main.app_bar_layout.*
+import com.quiz.videoconsolas.common.viewBinding
+import com.quiz.videoconsolas.databinding.RankingActivityBinding
 
 class RankingActivity : BaseActivity() {
+    private val binding by viewBinding(RankingActivityBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,11 +19,18 @@ class RankingActivity : BaseActivity() {
                 .replace(R.id.containerResult, RankingFragment.newInstance())
                 .commitNow()
         }
-
-        btnBack.setSafeOnClickListener {
+        setupToolbar()
+        binding.appBar.btnBack.setSafeOnClickListener {
             finish()
         }
-        toolbarTitle.text = getString(R.string.best_points)
-        layoutLife.visibility = View.GONE
+        binding.appBar.toolbarTitle.text = getString(R.string.best_points)
+        binding.appBar.layoutLife.visibility = View.GONE
+    }
+
+    private fun setupToolbar() {
+        binding.appBar.toolbarTitle.text = getString(R.string.ranking_screen_title)
+        binding.appBar.layoutLife.visibility = View.GONE
+        binding.appBar.layoutExtendedTitle.background = null
+        binding.appBar.btnBack.setSafeOnClickListener { finishAfterTransition() }
     }
 }

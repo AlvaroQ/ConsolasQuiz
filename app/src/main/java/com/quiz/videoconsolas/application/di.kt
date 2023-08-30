@@ -27,13 +27,13 @@ import com.quiz.videoconsolas.ui.result.ResultFragment
 import com.quiz.videoconsolas.ui.result.ResultViewModel
 import com.quiz.videoconsolas.ui.select.SelectFragment
 import com.quiz.videoconsolas.ui.select.SelectViewModel
-import com.quiz.videoconsolas.ui.settings.SettingsFragment
 import com.quiz.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -42,15 +42,11 @@ fun Application.initDI() {
     startKoin {
         androidLogger()
         androidContext(this@initDI)
-        koin.loadModules(listOf(
-            appModule,
-            dataModule,
-            scopesModule
-        ))
-        koin.createRootScope()
+        modules(appModule, dataModule, scopesModule)
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 private val appModule = module {
     factory<ResourceProvider> { ResourceProviderImpl(androidContext().resources) }
     factory { Firebase.firestore }
@@ -68,37 +64,20 @@ val dataModule = module {
 }
 
 private val scopesModule = module {
-    scope(named<SelectFragment>()) {
-        viewModel { SelectViewModel(get()) }
-        scoped { GetPaymentDone(get()) }
-    }
-    scope(named<GameFragment>()) {
-        viewModel { GameViewModel(get(), get(), get()) }
-        scoped { GetConsoleById(get()) }
-        scoped { GetPaymentDone(get()) }
-    }
-    scope(named<ResultFragment>()) {
-        viewModel { ResultViewModel(get(), get(), get(), get(), get(), get()) }
-        scoped { GetRecordScore(get()) }
-        scoped { GetAppsRecommended(get()) }
-        scoped { SaveTopScore(get()) }
-        scoped { GetPersonalRecord(get())}
-        scoped { SetPersonalRecord(get())}
-        scoped { GetPaymentDone(get()) }
-    }
-    scope(named<RankingFragment>()) {
-        viewModel { RankingViewModel(get(), get()) }
-        scoped { GetRankingScore(get()) }
-        scoped { GetPaymentDone(get()) }
-    }
-    scope(named<InfoFragment>()) {
-        viewModel { InfoViewModel(get(), get()) }
-        scoped { GetConsoleList(get()) }
-        scoped { GetPaymentDone(get()) }
-    }
-    scope(named<MoreAppsFragment>()) {
-        viewModel { MoreAppsViewModel(get(), get()) }
-        scoped { GetAppsRecommended(get()) }
-        scoped { GetPaymentDone(get()) }
-    }
+    viewModel { SelectViewModel(get()) }
+    viewModel { GameViewModel(get(), get(), get()) }
+    viewModel { ResultViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { RankingViewModel(get(), get()) }
+    viewModel { InfoViewModel(get(), get()) }
+    viewModel { MoreAppsViewModel(get(), get()) }
+
+    factory { GetPaymentDone(get()) }
+    factory { GetConsoleById(get()) }
+    factory { GetRecordScore(get()) }
+    factory { GetAppsRecommended(get()) }
+    factory { SaveTopScore(get()) }
+    factory { GetPersonalRecord(get())}
+    factory { SetPersonalRecord(get())}
+    factory { GetRankingScore(get()) }
+    factory { GetConsoleList(get()) }
 }
